@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id           Int       @id @default(autoincrement())
+  nombre       String
+  email        String    @unique
+  passwordHash String
+  rol          String    @default("ASISTENTE") // ADMIN | ABOGADO | ASISTENTE
+  activo       Boolean   @default(true)
+  creadoEn     DateTime  @default(now())
+  sesiones     Sesion[]
+  expedientes  Expediente[] @relation("Responsable")
+  tareas       Tarea[]
+  notas        Nota[]
+  documentos   Documento[]
+}
+
+model Sesion {
+  id        String   @id
+  usuarioId Int
+  creadoEn  DateTime @default(now())
+  expiraEn  DateTime
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+}
+
+model Cliente {
+  id             Int        @id @default(autoincrement())
+  nombre         String
+  tipo           String     @default("PARTICULAR") // PARTICULAR | EMPRESA
+  identificacion String     @unique
+  email          String?
+  telefono       String?
+  direccion      String?
+  notas          String?
+  creadoEn       DateTime   @default(now())
+  expedientes    Expediente[]
+  documentos     Documento[]
+  facturas       Factura[]
+}
+
+model Expediente {
+  id            Int        @id @default(autoincrement())
+  numero        String     @unique
+  titulo        String
+  descripcion   String?
+  estado        String     @default("ABIERTO") // ABIERTO | EN_PROGRESO | SUSPENDIDO | CERRADO
+  clienteId     Int
+  responsableId Int
+  creadoEn      DateTime   @default(now())
+  actualizadoEn DateTime   @updatedAt
+  cliente       Cliente    @relation(fields: [clienteId], references: [id], onDelete: Restrict)
+  responsable   Usuario    @relation("Responsable", fields: [responsableId], references: [id], onDelete: Restrict)
+  tareas        Tarea[]
+  audiencias    Audiencia[]
+  notas         Nota[]
+  documentos    Documento[]
+  facturas      Factura[]
+}
+
+model Tarea {
+  id               Int       @id @default(autoincrement())
+  titulo           String
+  descripcion      String?
+  estado           String    @default("PENDIENTE") // PENDIENTE | EN_CURSO | COMPLETADA
+  prioridad        String    @default("MEDIA") // BAJA | MEDIA | ALTA
+  fechaVencimiento DateTime?
+  expedienteId     Int?
+  asignadoId       Int
+  creadaEn         DateTime  @default(now())
+  expediente       Expediente?  @relation(fields: [expedienteId], references: [id], onDelete: Cascade)
+  asignado         Usuario      @relation(fields: [asignadoId], references: [id], onDelete: Restrict)
+}
+
+model Audiencia {
+  id           Int      @id @default(autoincrement())
+  titulo       String
+  tipo         String   @default("VISTA") // VISTA | JUICIO | VISTA_ORAL | CONFERENCIA | PLAZO
+  fecha        DateTime
+  lugar        String?
+  notas        String?
+  expedienteId Int
+  expediente   Expediente @relation(fields: [expedienteId], references: [id], onDelete: Cascade)
+}
+
+model Nota {
+  id           Int      @id @default(autoincrement())
+  contenido    String
+  expedienteId Int
+  autorId      Int
+  creadoEn     DateTime @default(now())
+  expediente   Expediente @relation(fields: [expedienteId], references: [id], onDelete: Cascade)
+  autor        Usuario    @relation(fields: [autorId], references: [id], onDelete: Restrict)
+}
+
+model Factura {
+  id             Int       @id @default(autoincrement())
+  numero         String    @unique
+  concepto       String
+  base           Float
+  iva            Float     @default(21)
+  emitidaEn      DateTime?
+  vencimientoEn  DateTime?
+  estado         String    @default("BORRADOR") // BORRADOR | EMITIDA | PAGADA | VENCIDA
+  expedienteId   Int?
+  clienteId      Int
+  expediente     Expediente? @relation(fields: [expedienteId], references: [id], onDelete: SetNull)
+  cliente        Cliente      @relation(fields: [clienteId], references: [id], onDelete: Restrict)
+}
+
+model Documento {
+  id           Int      @id @default(autoincrement())
+  nombre       String
+  ruta         String
+  mimeType     String
+  tamano       Int
+  expedienteId Int?
+  clienteId    Int?
+  subidoId     Int
+  subidoEn     DateTime @default(now())
+  expediente   Expediente? @relation(fields: [expedienteId], references: [id], onDelete: Cascade)
+  cliente      Cliente?    @relation(fields: [clienteId], references: [id], onDelete: SetNull)
+  subido       Usuario     @relation(fields: [subidoId], references: [id], onDelete: Restrict)
+}
