@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import SelectorTema from "@/components/SelectorTema";
 
 export default function FormularioLogin() {
   const router = useRouter();
@@ -37,6 +38,9 @@ export default function FormularioLogin() {
   return (
     <div className="pagina-login">
       <div className="tarjeta-login">
+        <div className="seccion-tema-login">
+          <SelectorTema />
+        </div>
         <div className="escudo">G</div>
         <h1>Gestoría de Abogados</h1>
         <p className="subtitulo">Acceso al área privada del despacho</p>

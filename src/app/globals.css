@@ -1,16 +1,62 @@
 :root {
   --fondo: #f4f6f9;
   --panel: #ffffff;
+  --panel-2: #f2f5f9;
+  --campo: #ffffff;
   --tinta: #1c2530;
   --tinta-suave: #5b6675;
   --borde: #dde3ea;
+  --borde-suave: #eef1f5;
   --primario: #1e4f8f;
   --primario-oscuro: #163a68;
   --acento: #b3842e;
   --rojo: #b03a2e;
   --verde: #2e7d4f;
   --ambar: #9a6b1f;
+  --peligro-suave: #faeae8;
+  --error-fondo: #faeae8;
+  --error-borde: #eccfcb;
+  --hover-suave: #f8fafc;
   --sombra: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+html[data-tema="oscuro"] {
+  --fondo: #0e1621;
+  --panel: #16212f;
+  --panel-2: #1d2a3a;
+  --campo: #101a26;
+  --tinta: #dbe4f0;
+  --tinta-suave: #8fa0b5;
+  --borde: #263547;
+  --borde-suave: #1f2c3c;
+  --primario: #2f6bbf;
+  --primario-oscuro: #24508d;
+  --acento: #d3a34d;
+  --rojo: #e07b6f;
+  --verde: #6fc493;
+  --ambar: #e3b563;
+  --peligro-suave: rgba(196, 90, 80, 0.18);
+  --error-fondo: rgba(196, 90, 80, 0.15);
+  --error-borde: rgba(196, 90, 80, 0.4);
+  --hover-suave: #1d2a3a;
+  --sombra: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+html {
+  color-scheme: light;
+}
+html[data-tema="oscuro"] {
+  color-scheme: dark;
+}
+
+.fila-tema {
+  margin-top: 14px;
+}
+.seccion-tema-login {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+  min-height: 32px;
 }
 
 * {
@@ -228,14 +274,14 @@ a:hover {
 }
 .tabla td {
   padding: 11px 18px;
-  border-bottom: 1px solid #eef1f5;
+  border-bottom: 1px solid var(--borde-suave);
   vertical-align: middle;
 }
 .tabla tr:last-child td {
   border-bottom: 0;
 }
 .tabla tr:hover td {
-  background: #f8fafc;
+  background: var(--hover-suave);
 }
 .celda-derecha {
   text-align: right;
@@ -289,20 +335,20 @@ a:hover {
   background: var(--primario-oscuro);
 }
 .boton.secundario {
-  background: #fff;
+  background: var(--panel);
   color: var(--tinta);
   border: 1px solid var(--borde);
 }
 .boton.secundario:hover {
-  background: #f2f5f9;
+  background: var(--panel-2);
 }
 .boton.peligro {
-  background: #fff;
+  background: var(--panel);
   color: var(--rojo);
-  border: 1px solid #eccfcb;
+  border: 1px solid var(--error-borde);
 }
 .boton.peligro:hover {
-  background: #faeae8;
+  background: var(--peligro-suave);
 }
 .boton.mini {
   padding: 4px 10px;
@@ -340,7 +386,7 @@ textarea {
   padding: 9px 11px;
   font-size: 14px;
   font-family: inherit;
-  background: #fff;
+  background: var(--campo);
   color: var(--tinta);
 }
 input:focus,
@@ -363,9 +409,9 @@ textarea {
 }
 
 .error-formulario {
-  background: #faeae8;
+  background: var(--error-fondo);
   color: var(--rojo);
-  border: 1px solid #eccfcb;
+  border: 1px solid var(--error-borde);
   border-radius: 8px;
   padding: 10px 12px;
   font-size: 13.5px;
@@ -404,7 +450,7 @@ textarea {
   overflow-y: auto;
 }
 .dialogo {
-  background: #fff;
+  background: var(--panel);
   border-radius: 12px;
   width: 100%;
   max-width: 560px;
@@ -457,7 +503,7 @@ textarea {
 }
 .lista-compacta li {
   padding: 10px 18px;
-  border-bottom: 1px solid #eef1f5;
+  border-bottom: 1px solid var(--borde-suave);
   display: flex;
   justify-content: space-between;
   gap: 12px;
@@ -487,4 +533,47 @@ textarea {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+/* ---------- tema oscuro: ajustes de componentes ---------- */
+html[data-tema="oscuro"] .pagina-login {
+  background: linear-gradient(135deg, #0a1420 0%, #14293f 55%, #1d3a5c 100%);
+}
+html[data-tema="oscuro"] .chip.neutro {
+  background: rgba(255, 255, 255, 0.08);
+  color: #b9c7d9;
+}
+html[data-tema="oscuro"] .chip.azul {
+  background: rgba(90, 147, 217, 0.18);
+  color: #7fb3f0;
+}
+html[data-tema="oscuro"] .chip.verde {
+  background: rgba(73, 160, 110, 0.2);
+  color: #6fc493;
+}
+html[data-tema="oscuro"] .chip.rojo {
+  background: rgba(196, 90, 80, 0.22);
+  color: #ef9a90;
+}
+html[data-tema="oscuro"] .chip.ambar {
+  background: rgba(200, 150, 60, 0.2);
+  color: #e3b563;
+}
+html[data-tema="oscuro"] .chip.gris {
+  background: rgba(255, 255, 255, 0.08);
+  color: #93a3b8;
+}
+html[data-tema="oscuro"] .escudo {
+  background: var(--primario);
+  color: #fff;
+}
+html[data-tema="oscuro"] .barra-lateral {
+  background: #0b131d;
+}
+
+/* ---------- selector de tema ---------- */
+.selector-tema {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }

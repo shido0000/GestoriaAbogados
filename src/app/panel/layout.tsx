@@ -3,6 +3,7 @@ import { getUsuarioActual } from "@/lib/auth";
 import { ETIQUETA_ROL } from "@/lib/constantes";
 import CerrarSesion from "./CerrarSesion";
 import Navegacion from "./Navegacion";
+import SelectorTema from "@/components/SelectorTema";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +17,9 @@ export default async function LayoutPanel({ children }: { children: React.ReactN
         <div className="marca">
           <div className="titulo">Gestoría de Abogados</div>
           <div className="sub">Área privada del despacho</div>
+          <div className="fila-tema">
+            <SelectorTema />
+          </div>
         </div>
         <Navegacion rol={usuario.rol} />
         <div className="pie-sesion">
