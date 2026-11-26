@@ -28,6 +28,9 @@ model Sesion {
   creadoEn  DateTime @default(now())
   expiraEn  DateTime
   usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@index([usuarioId])
+  @@index([expiraEn])
 }
 
 model Cliente {
@@ -43,6 +46,10 @@ model Cliente {
   expedientes    Expediente[]
   documentos     Documento[]
   facturas       Factura[]
+
+  @@index([nombre])
+  @@index([identificacion])
+  @@index([tipo])
 }
 
 model Expediente {
@@ -62,6 +69,11 @@ model Expediente {
   notas         Nota[]
   documentos    Documento[]
   facturas      Factura[]
+
+  @@index([clienteId])
+  @@index([responsableId])
+  @@index([estado])
+  @@index([creadoEn])
 }
 
 model Tarea {
@@ -76,6 +88,10 @@ model Tarea {
   creadaEn         DateTime  @default(now())
   expediente       Expediente?  @relation(fields: [expedienteId], references: [id], onDelete: Cascade)
   asignado         Usuario      @relation(fields: [asignadoId], references: [id], onDelete: Restrict)
+
+  @@index([estado, fechaVencimiento])
+  @@index([asignadoId])
+  @@index([expedienteId])
 }
 
 model Audiencia {
@@ -87,6 +103,9 @@ model Audiencia {
   notas        String?
   expedienteId Int
   expediente   Expediente @relation(fields: [expedienteId], references: [id], onDelete: Cascade)
+
+  @@index([fecha])
+  @@index([expedienteId])
 }
 
 model Nota {
@@ -97,6 +116,8 @@ model Nota {
   creadoEn     DateTime @default(now())
   expediente   Expediente @relation(fields: [expedienteId], references: [id], onDelete: Cascade)
   autor        Usuario    @relation(fields: [autorId], references: [id], onDelete: Restrict)
+
+  @@index([expedienteId, creadoEn])
 }
 
 model Factura {
@@ -112,6 +133,10 @@ model Factura {
   clienteId      Int
   expediente     Expediente? @relation(fields: [expedienteId], references: [id], onDelete: SetNull)
   cliente        Cliente      @relation(fields: [clienteId], references: [id], onDelete: Restrict)
+
+  @@index([clienteId])
+  @@index([estado])
+  @@index([expedienteId])
 }
 
 model Documento {
@@ -127,4 +152,8 @@ model Documento {
   expediente   Expediente? @relation(fields: [expedienteId], references: [id], onDelete: Cascade)
   cliente      Cliente?    @relation(fields: [clienteId], references: [id], onDelete: SetNull)
   subido       Usuario     @relation(fields: [subidoId], references: [id], onDelete: Restrict)
+
+  @@index([expedienteId])
+  @@index([clienteId])
+  @@index([subidoEn])
 }

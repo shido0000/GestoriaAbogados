@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getUsuarioActual } from "@/lib/auth";
 import { puede } from "@/lib/constantes";
@@ -7,6 +8,7 @@ export const dynamic = "force-dynamic";
 
 export default async function PaginaFacturasServidor() {
   const usuario = await getUsuarioActual();
+  if (!puede(usuario?.rol ?? "ASISTENTE", "facturas")) redirect("/panel");
   const [facturas, clientes, expedientes] = await Promise.all([
     prisma.factura.findMany({
       include: {

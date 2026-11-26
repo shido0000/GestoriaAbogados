@@ -9,6 +9,7 @@
     "postinstall": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "node prisma/seed.mjs",
+    "test": "node tests/regresion.mjs",
     "typecheck": "tsc --noEmit"
   },
   "prisma": {

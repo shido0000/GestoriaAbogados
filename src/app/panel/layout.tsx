@@ -11,24 +11,41 @@ export default async function LayoutPanel({ children }: { children: React.ReactN
   const usuario = await getUsuarioActual();
   if (!usuario) redirect("/");
 
+  const iniciales = usuario.nombre
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((parte) =>parte[0]!.toUpperCase())
+    .join("");
+
   return (
     <div className="panel">
       <aside className="barra-lateral">
         <div className="marca">
-          <div className="titulo">Gestoría de Abogados</div>
-          <div className="sub">Área privada del despacho</div>
-          <div className="fila-tema">
-            <SelectorTema />
+          <div className="marca-icono" aria-hidden="true">
+            G
+          </div>
+          <div>
+            <div className="titulo">Gestoría</div>
+            <div className="sub">Despacho de abogados</div>
           </div>
         </div>
         <Navegacion rol={usuario.rol} />
         <div className="pie-sesion">
           <div className="datos-usuario">
-            <strong>{usuario.nombre}</strong>
-            <br />
-            <span className="rol">{ETIQUETA_ROL[usuario.rol] ?? usuario.rol}</span>
+            <div className="avatar" aria-hidden="true">
+              {iniciales}
+            </div>
+            <div>
+              <strong>{usuario.nombre}</strong>
+              <br />
+              <span className="rol">{ETIQUETA_ROL[usuario.rol] ?? usuario.rol}</span>
+            </div>
           </div>
-          <CerrarSesion />
+          <div className="fila-tema">
+            <SelectorTema />
+            <CerrarSesion />
+          </div>
         </div>
       </aside>
       <main className="contenido">{children}</main>

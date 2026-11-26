@@ -6,7 +6,7 @@ import { manejarError, texto } from "@/lib/validacion";
 export async function POST(req: NextRequest): Promise<Response> {
   return manejarError(async () => {
     const cuerpo = (await req.json()) as Record<string, unknown>;
-    const email = texto(cuerpo.email, "email");
+    const email = texto(cuerpo.email, "email").toLowerCase();
     const contrasena = texto(cuerpo.contrasena, "contraseña");
 
     const usuario = await prisma.usuario.findUnique({ where: { email } });

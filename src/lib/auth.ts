@@ -1,4 +1,5 @@
 import { randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { prisma } from "./prisma";
 
@@ -39,7 +40,7 @@ export async function destruirSesion(token: string): Promise<void> {
   await prisma.sesion.deleteMany({ where: { id: token } });
 }
 
-export async function getUsuarioActual(): Promise<UsuarioSesion | null> {
+export const getUsuarioActual = cache(async function (): Promise<UsuarioSesion | null> {
   const almacen = await cookies();
   const token = almacen.get(COOKIE_SESION)?.value;
   if (!token) return null;
@@ -56,7 +57,7 @@ export async function getUsuarioActual(): Promise<UsuarioSesion | null> {
     email: sesion.usuario.email,
     rol: sesion.usuario.rol,
   };
-}
+});
 
 export class HttpError extends Error {
   status: number;
